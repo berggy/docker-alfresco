@@ -119,6 +119,7 @@ using environment variables.
 - **ALFRESCO_HOSTNAME**: hostname of the Alfresco server; default = `localhost`
 - **ALFRESCO_PORT**: port for afresco to listen to; default = `8080` if protocol is http or `8443` if protocol is https
 - **ALFRESCO_PROTOCOL**: protocol used by alfresco to generate links; default = `http`
+- **ONLYOFFICE_HOSTURL**: url of your OnlyOffice Document Server, default = `http://www.example.com:8084/`. SET the xxx_PORT, if you map port other than 8080
 - **AMP_DIR_ALFRESCO**: directory containing AMP files (modules) for alfresco.war (bind mount as volume)
 - **AMP_DIR_SHARE**: directory containing AMP files (modules) for share.war (bind mount as volume)
 - **CIFS_ENABLED**: whether or not to enable CIFS; default = `true`
@@ -134,7 +135,7 @@ using environment variables.
 - **FTP_PORT**: port of the database server; default = `5432`
 - **LDAP_ENABLED**: whether or not to enable LDAP; default = `false`
 - **LDAP_KIND**: ldap (e.g. for OpenLDAP) or ldap-ad (Active Directory); default = ldap
-- **LDAP_AUTH_USERNAMEFORMAT**: Specifies how to map the user identifier entered by the user to that passed through to LDAP. Could be empty to enable "search and bind" method. default = `uid=%s,cn=users,cn=accounts,dc=example,dc=com`
+- **LDAP_AUTH_USERNAMEFORMAT**: KEEP this empty string "". Specifies how to map the user identifier entered by the user to that passed through to LDAP. Could be empty to enable "search and bind" method. default = `uid=%s,cn=users,cn=accounts,dc=example,dc=com`
 - **LDAP_URL**: URL of LDAP server; default = `ldap://ldap.example.com:389`
 - **LDAP_DEFAULT_ADMINS**: comma separated list of admin names in ldap; default = `admin`
 - **LDAP_SECURITY_PRINCIPAL**: default = `uid=admin,cn=users,cn=accounts,dc=example,dc=com`
