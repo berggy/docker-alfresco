@@ -20,6 +20,9 @@ ALF_BIN=$ALF_HOME/bin
 ALF_SETUP=$ALF_HOME/setup
 CATALINA_HOME=$ALF_HOME/tomcat
 
+# for onlyoffice
+ONLYOFFICE_HOSTURL=${ONLYOFFICE_HOSTURL:-http://www.ccpoa.com:8084/}
+
 ALFRESCO_HOSTNAME=${ALFRESCO_HOSTNAME:-127.0.0.1}
 ALFRESCO_PROTOCOL=${ALFRESCO_PROTOCOL:-http}
 if [ "${ALFRESCO_PROTOCOL,,}" = "https" ]; then
@@ -159,6 +162,9 @@ function tweak_alfresco {
   cfg_replace_option cifs.ipv6.enabled "false" $ALFRESCO_GLOBAL_PROPERTIES
 
   cfg_replace_option nfs.enabled $NFS_ENABLED $ALFRESCO_GLOBAL_PROPERTIES
+  
+  #for onlyoffice
+  cfg_replace_option onlyoffice.url $ONLYOFFICE_HOSTURL $ALFRESCO_GLOBAL_PROPERTIES
 
   # authentication
   if [ "$LDAP_ENABLED" == "true" ]; then
