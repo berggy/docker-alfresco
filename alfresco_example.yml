@@ -1,0 +1,73 @@
+#prepare database, execute:
+     CREATE DATABASE alfresco DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
+     CREATE USER 'alfresco'@'%' IDENTIFIED BY 'alfresco';
+     GRANT ALL PRIVILEGES ON alfresco.* TO 'alfresco'@'%';
+     flush privileges;
+     commit;
+
+#to start
+docker stack deploy -c alfresco_example.yml alfresco-stack
+#to remove
+# docker stack rm alfresco-stack
+
+
+version: '3.1'
+services:
+  alfresco:
+    networks: 
+      - mydockernet
+    dns: 192.168.2.1
+    image: YOUR_LOCAL_IP:5000/gui81/docker-alfresco:v2
+    ports:
+      - 8089:8080
+      - 7445:445
+      - 17070:7070
+    environment:
+        ALFRESCO_HOSTNAME: "www.example.com"
+#MUST be set.        
+        ALFRESCO_PORT: "8089"
+        SHARE_HOSTNAME: "www.example.com"
+        SHARE_PORT: "8089"
+        ONLYOFFICE_HOSTURL: "http://www.example.com:8084/"
+        LDAP_ENABLED: "true"
+        LDAP_KIND: "ldap"
+#keep this empty!        
+        LDAP_AUTH_USERNAMEFORMAT: ""
+        LDAP_URL: "ldap://YOUR_LDAP_IP:389"
+        LDAP_DEFAULT_ADMINS: "admin"
+        LDAP_SECURITY_PRINCIPAL: "cn=admin,dc=example,dc=com"
+        LDAP_SECURITY_CREDENTIALS: "YOUR_LDAP_PASSWORD"
+        LDAP_GROUP_SEARCHBASE: "cn=groups,dc=example,dc=com"
+        LDAP_USER_SEARCHBASE: "cn=users,dc=example,dc=com"
+        LDAP_USER_ATTRIBUTENAME: "uid"
+        LDAP_GROUP_MEMBER_ATTRIBUTENAME: "memberUid"
+        DB_KIND: "mysql"
+        DB_HOST: "YOUR_MYSQL_HOST_IP"
+        DB_USERNAME: "alfresco"
+        DB_PASSWORD: "alfresco"
+        DB_NAME: "alfresco"
+        MAIL_HOST: "example.com"
+        MAIL_PORT: "25"
+        MAIL_USERNAME: "MAIL_USER"
+        MAIL_PASSWORD: "MAIL_USER_PASSWORD"
+        MAIL_FROM_DEFAULT: "MAIL_USER@example.com"
+        MAIL_PROTOCOL: "smtp"
+        MAIL_SMTP_AUTH: "true"
+    volumes:
+      - alfresco-content:/content
+      - alfresco-data:/alfresco/alf_data
+      - alfresco-log:/alfresco/tomcat/logs
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.role == worker
+      restart_policy:
+        condition: on-failure
+volumes:
+  alfresco-content:
+  alfresco-data:
+  alfresco-log:
+networks:
+  mydockernet:
+    external: true
