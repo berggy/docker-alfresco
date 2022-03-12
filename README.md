@@ -119,7 +119,7 @@ using environment variables.
 - **ALFRESCO_HOSTNAME**: hostname of the Alfresco server; default = `localhost`
 - **ALFRESCO_PORT**: port for afresco to listen to; default = `8080` if protocol is http or `8443` if protocol is https
 - **ALFRESCO_PROTOCOL**: protocol used by alfresco to generate links; default = `http`
-- **ONLYOFFICE_HOSTURL**: url of your OnlyOffice Document Server, default = `http://www.example.com:8084/`. SET the xxx_PORT, if you map port other than 8080
+- **ONLYOFFICE_HOSTURL**: url of your OnlyOffice Document Server, default = `http://www.example.com:8084/`. SET the ALFRESCO/SHARE_PORT, if you map port other than 8080
 - **AMP_DIR_ALFRESCO**: directory containing AMP files (modules) for alfresco.war (bind mount as volume)
 - **AMP_DIR_SHARE**: directory containing AMP files (modules) for share.war (bind mount as volume)
 - **CIFS_ENABLED**: whether or not to enable CIFS; default = `true`
