@@ -20,11 +20,26 @@ RUN yum update -y && \
                    patch \
                    rsync \
                    supervisor \
-                   wget && \
+                   wget \
+                   openjdk-8-jre \
+                   maven \
+                   libreoffice \
+                   ghostscript \
+                   ghostscript-x \
+                   fonts-noto \
+                   fonts-wqy* \
+                   poppler-utils \
+                   fonts-ipafont-mincho \
+                   fonts-ipafont-gothic \
+                   fonts-arphic-ukai \
+                   fonts-arphic-uming \
+                   fonts-nanum \                   
     yum clean all && rm -rf /tmp/* /var/tmp/* /var/cache/yum/*
 
 # install alfresco
 COPY assets/install_alfresco.sh /tmp/install_alfresco.sh
+# download from https://sourceforge.net/projects/alfresco/files/
+COPY assets/alfresco-community-installer-201707-linux-x64.bin /tmp/alfresco-community-installer-201707-linux-x64.bin
 RUN /tmp/install_alfresco.sh && \
     rm -rf /tmp/* /var/tmp/*
 # install mysql connector for alfresco
@@ -50,6 +65,17 @@ COPY assets/supervisord.conf /etc/supervisord.conf
 
 RUN mkdir -p /alfresco/tomcat/webapps/ROOT
 COPY assets/index.jsp /alfresco/tomcat/webapps/ROOT/
+
+#prepare fonts and install onlyoffice
+RUN cp -R /alfresco/libreoffice/share/fonts/*  /usr/share/fonts/ && \
+    mkfontscale && \
+    mkfontdir && \
+    fc-cache -fv && \
+    cd /alfresco/amps/ && \
+    wget https://github.com/ONLYOFFICE/onlyoffice-alfresco/releases/download/1.0.5/onlyoffice-alfresco-repo-1.0.5.amp && \
+    cd /alfresco/amps_share/ && \
+    wget https://github.com/ONLYOFFICE/onlyoffice-alfresco/releases/download/1.0.5/onlyoffice-alfresco-share-1.0.5.amp && \
+    /alfresco/bin/apply_amps.sh
 
 VOLUME /alfresco/alf_data
 VOLUME /alfresco/tomcat/logs
